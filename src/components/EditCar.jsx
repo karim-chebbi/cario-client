@@ -1,52 +1,46 @@
+import { Button, Modal } from 'antd';
 import React, { useState } from 'react'
-import { Modal } from "antd";
-import { addCar } from '../JS/Actions/CarActions';
-import { useDispatch } from "react-redux";
+import { EditOutlined } from "@ant-design/icons";
+import { useDispatch } from 'react-redux';
+import { editCar } from '../JS/Actions/CarActions';
 
-const AddCar = () => {
+const EditCar = ({car}) => {
+  const dispatch = useDispatch();
 
-const dispatch = useDispatch();
-      const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-      const [newCar, setNewCar] = useState({})
+  const [newCar, setNewCar] = useState({});
 
-          const handleChange = (e) => {
-            setNewCar({ ...newCar, [e.target.name]: e.target.value });
-          };
+  const handleChange = (e) => {
+    setNewCar({ ...newCar, [e.target.name]: e.target.value });
+  };
 
-
-          const handleAdd = () => {
-            dispatch(addCar(newCar))
-            handleCancel()
-          }
-      const showModal = () => {
-        setIsModalOpen(true);
-      };
-      const handleCancel = () => {
-        setIsModalOpen(false);
-      };
-
-      
+  const handleEdit = () => {
+    dispatch(editCar(car._id, newCar));
+    handleCancel();
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
-    <div>
-      <button
-        onClick={showModal}
-        className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-      >
-        Add car
-      </button>
+    <>
+      <Button onClick={showModal} icon={<EditOutlined />}>
+        Edit
+      </Button>
 
       <Modal
-        title="Adding a new car"
+        title="Editing car"
         open={isModalOpen}
-        onOk={handleAdd}
+        onOk={handleEdit}
         onCancel={handleCancel}
       >
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleAdd();
+            handleEdit();
           }}
           className="p-4 md:p-5"
         >
@@ -64,7 +58,7 @@ const dispatch = useDispatch();
                 name="brand"
                 id="brand"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type the brand name"
+                placeholder={car.brand}
                 required=""
                 onChange={(e) => handleChange(e)}
               />
@@ -82,7 +76,7 @@ const dispatch = useDispatch();
                 name="model"
                 id="model"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type the model name"
+                placeholder={car.model}
                 required=""
                 onChange={(e) => handleChange(e)}
               />
@@ -100,7 +94,7 @@ const dispatch = useDispatch();
                 name="year"
                 id="year"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2024"
+                placeholder={car.year}
                 required=""
                 min={1800}
                 max={2025}
@@ -120,7 +114,7 @@ const dispatch = useDispatch();
                 name="price"
                 id="price"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="$2999"
+                placeholder={car.price}
                 required=""
                 onChange={(e) => handleChange(e)}
               />
@@ -183,28 +177,11 @@ const dispatch = useDispatch();
               ></textarea>
             </div>
           </div>
-          <button
-            type="submit"
-            className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            <svg
-              className="me-1 -ms-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            Add new car
-          </button>
+
         </form>
       </Modal>
-    </div>
+    </>
   );
 }
 
-export default AddCar
+export default EditCar

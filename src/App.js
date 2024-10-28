@@ -2,6 +2,7 @@ import './App.css';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import About from './pages/About';
+import CarDetails from './pages/CarDetails';
 import Contact from './pages/Contact';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/profile" element={ <Profile /> } />
         <Route path="/shop" element={ <Shop /> } />
         <Route path="/*" element={ <ErrorPage /> } />
+        <Route path="/carDetails/:id" element={ <CarDetails /> } />
       </Routes>
       <Footer />
     </div>
