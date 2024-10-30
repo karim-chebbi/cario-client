@@ -17,3 +17,9 @@ export const DELETE_CAR_FAIL = "DELETE_CAR_FAIL";
 export const EDIT_CAR_LOAD = "EDIT_CAR_LOAD";
 export const EDIT_CAR_SUCCESS = "EDIT_CAR_SUCCESS";
 export const EDIT_CAR_FAIL = "EDIT_CAR_FAIL";
+
+
+
+export const GET_MY_CARS_LOAD = "GET_MY_CARS_LOAD";
+export const GET_MY_CARS_SUCCESS = "GET_MY_CARS_SUCCESS";
+export const GET_MY_CARS_FAIL = "GET_MY_CARS_FAIL";

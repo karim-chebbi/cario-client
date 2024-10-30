@@ -35,6 +35,7 @@ export default function CarDetails() {
 
     const car = useSelector(state => state.CarReducer.car)
     const load = useSelector(state => state.CarReducer.load)
+    const user = useSelector(state => state.AuthReducer.user)
 
     useEffect(() => {
       dispatch(getCarById(id))
@@ -59,10 +60,12 @@ export default function CarDetails() {
           </h2>
           <p className="mt-4 text-gray-500">{car.description}</p>
 
-          <div className="flex justify-left gap-8 mt-4">
-            <EditCar car={car} />
-            <DeleteCar car={car} />
-          </div>
+          {user && user.isAdmin && (
+            <div className="flex justify-left gap-8 mt-4">
+              <EditCar car={car} />
+              <DeleteCar car={car} />
+            </div>
+          )}
 
           <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
             {load ? (

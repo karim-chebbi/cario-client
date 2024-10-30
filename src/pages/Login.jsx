@@ -1,9 +1,25 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../JS/Actions/AuthActions";
 
 export default function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [user, setUser] = useState({});
+
+    const handleChange = (e) => {
+      setUser({ ...user, [e.target.id]: e.target.value });
+    };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(login({ user, navigate }));
+      };
+
   return (
     <>
-
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -17,7 +33,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -27,6 +43,7 @@ export default function Login() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={handleChange}
                   id="email"
                   name="email"
                   type="email"
@@ -56,6 +73,7 @@ export default function Login() {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={handleChange}
                   id="password"
                   name="password"
                   type="password"

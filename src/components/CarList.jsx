@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCars } from "../JS/Actions/CarActions";
+import { getCars, getMyCars } from "../JS/Actions/CarActions";
 import AddCar from "./AddCar";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
@@ -14,12 +14,21 @@ export default function CarList() {
 
     const dispatch = useDispatch()
 
+    const user = useSelector(state => state.AuthReducer.user) 
+
     const cars = useSelector(state => state.CarReducer.cars)
 
     const load = useSelector(state => state.CarReducer.load)
 
+    const myCars = useSelector((state) => state.CarReducer.myCars);
+
     useEffect(() => {
       dispatch(getCars());
+    }, [dispatch]);
+
+    // get my cars
+    useEffect(() => {
+      dispatch(getMyCars());
     }, [dispatch]);
     
 
@@ -32,44 +41,81 @@ export default function CarList() {
         <AddCar />
         {load && <Spinner />}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {cars.map((car) => (
-            <div
-              onClick={() => navigate(`/carDetails/${car._id}`)}
-              key={car._id}
-              className="group relative"
-            >
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img
-                  alt={car.imageAlt}
-                  src={car.image}
-                  className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                />
-              </div>
-              <div className="my-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    {car.brand}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">{car.model}</p>
+          {user && user.isAdmin
+            ? cars.map((car) => (
+                <div
+                  onClick={() => navigate(`/carDetails/${car._id}`)}
+                  key={car._id}
+                  className="group relative"
+                >
+                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                    <img
+                      alt={car.imageAlt}
+                      src={car.image}
+                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    />
+                  </div>
+                  <div className="my-4 flex justify-between">
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        {car.brand}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500">{car.model}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        {car.price}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500">{car.fuel}</p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => navigate(`/carDetails/${car._id}`)}
+                    icon={<ZoomInOutlined />}
+                  >
+                    View details
+                  </Button>
                 </div>
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    {car.price}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">{car.fuel}</p>
+              ))
+            : myCars.map((car) => (
+                <div
+                  onClick={() => navigate(`/carDetails/${car._id}`)}
+                  key={car._id}
+                  className="group relative"
+                >
+                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                    <img
+                      alt={car.imageAlt}
+                      src={car.image}
+                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    />
+                  </div>
+                  <div className="my-4 flex justify-between">
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        {car.brand}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500">{car.model}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        {car.price}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500">{car.fuel}</p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => navigate(`/carDetails/${car._id}`)}
+                    icon={<ZoomInOutlined />}
+                  >
+                    View details
+                  </Button>
                 </div>
- 
-              </div>
-              <Button
-                onClick={() => navigate(`/carDetails/${car._id}`)}
-                icon={<ZoomInOutlined />}
-              >
-                View details
-              </Button>
-            </div>
-          ))}
+              ))}
         </div>
       </div>
     </div>

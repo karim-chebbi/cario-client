@@ -11,7 +11,7 @@ const dispatch = useDispatch();
       const [newCar, setNewCar] = useState({})
 
           const handleChange = (e) => {
-            setNewCar({ ...newCar, [e.target.name]: e.target.value });
+            setNewCar({ ...newCar, [e.target.name]: e.target.value }); 
           };
 
 
